@@ -4,7 +4,7 @@
   "login.submitButton": "Login",
   "register.firstnamePlaceholder": "Enter name",
   "register.lastNamePlaceholder": "Enter last name",
-  "register.loginPlaceholder": "Enter name",
+  "register.loginPlaceholder": "Enter login",
   "register.passwordPlaceholder": "Enter password",
   "register.submitButton": "Register"
 }

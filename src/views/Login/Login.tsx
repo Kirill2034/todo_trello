@@ -2,10 +2,18 @@ import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { TextField, Box, Button } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { API_CLIENT } from '../../api';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
-  const onSubmit = (values: any) => {
-    console.log(values);
+  const history = useHistory();
+
+  const onSubmit = async (values: any) => {
+    const { data } = await API_CLIENT.post('/login', values);
+
+    API_CLIENT.defaults.headers['Authorization'] = data;
+
+    history.replace('/');
   };
 
   const { t } = useTranslation();

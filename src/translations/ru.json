@@ -4,7 +4,7 @@
   "login.submitButton": "Войти",
   "register.firstnamePlaceholder": "Введите имя",
   "register.lastNamePlaceholder": "Введите фамилию",
-  "register.loginPlaceholder": "Введите имя",
+  "register.loginPlaceholder": "Введите логин",
   "register.passwordPlaceholder": "Введите пароль",
   "register.submitButton": "Регистрация"
 }

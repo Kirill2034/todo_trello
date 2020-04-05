@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  database:
+    container_name: todo_trello_database
+    image: postgres:12.1
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - ./docker-volumes/postgresql:/var/lib/postgresql
+    env_file:
+      - database.env

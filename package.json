@@ -29,15 +29,13 @@
     "test": "react-scripts test",
     "pretty": "prettier src/ --write",
     "lint": "eslint --ext .ts,.tsx src/ --fix",
-    "sort-translations": "sort-json src/translations/*.json",
-    "precommit": "yarn sort-translations && tsc --noEmit && lint-staged"
+    "sort-translations": "sort-json src/translations/*.json"
   },
   "husky": {
-    "pre-commit": "yarn precommit"
+    "pre-commit": "yarn sort-translations && tsc --notEmit && yarn lint && lint-staged"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "eslint --fix",
       "prettier --write"
     ]
   },

@@ -1,0 +1,10 @@
+{
+  "login.loginPlaceholder": "Введите имя",
+  "login.passwordPlaceholder": "Введите пароль",
+  "login.submitButton": "Войти",
+  "register.firstnamePlaceholder": "Введите имя",
+  "register.lastNamePlaceholder": "Введите фамилию",
+  "register.loginPlaceholder": "Введите имя",
+  "register.passwordPlaceholder": "Введите пароль",
+  "register.submitButton": "Регистрация"
+}

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.9",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -10,19 +11,44 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.3",
+    "final-form": "^4.19.1",
+    "i18next": "^19.3.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-final-form": "^6.4.0",
+    "react-i18next": "^11.3.4",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "reset-css": "^5.0.1",
     "typescript": "~3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "pretty": "prettier src/ --write",
+    "lint": "eslint --ext .ts,.tsx src/ --fix",
+    "sort-translations": "sort-json src/translations/*.json",
+    "precommit": "yarn sort-translations && tsc --noEmit && lint-staged"
+  },
+  "husky": {
+    "pre-commit": "yarn precommit"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
   },
   "browserslist": {
     "production": [
@@ -35,5 +61,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.2",
+    "prettier": "^2.0.2",
+    "sort-json": "^2.0.0"
   }
 }

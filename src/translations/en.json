@@ -1,0 +1,10 @@
+{
+  "login.loginPlaceholder": "Enter name",
+  "login.passwordPlaceholder": "Enter password",
+  "login.submitButton": "Login",
+  "register.firstnamePlaceholder": "Enter name",
+  "register.lastNamePlaceholder": "Enter last name",
+  "register.loginPlaceholder": "Enter name",
+  "register.passwordPlaceholder": "Enter password",
+  "register.submitButton": "Register"
+}

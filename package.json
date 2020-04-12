@@ -35,11 +35,11 @@
     "test": "react-scripts test",
     "pretty": "prettier src/ --write",
     "lint": "eslint --ext .ts,.tsx src/ --fix",
-    "sort-translations": "sort-json src/translations/*.json"
+    "sort-translations": "sort-json 'src/translations/*.json'"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn sort-translations && tsc --noEmit && yarn lint && lint-staged"
+      "pre-commit": "yarn sort-translations && lint-staged"
     }
   },
   "lint-staged": {

@@ -1,5 +1,6 @@
 {
-  "login.loginPlaceholder": "Введите имя",
+  "home.createTodo": "Создать todo",
+  "login.loginPlaceholder": "Введите логин",
   "login.passwordPlaceholder": "Введите пароль",
   "login.submitButton": "Войти",
   "register.firstnamePlaceholder": "Введите имя",

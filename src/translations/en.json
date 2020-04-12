@@ -1,10 +1,11 @@
 {
-  "login.loginPlaceholder": "Enter name",
+  "login.loginPlaceholder": "Enter login",
   "login.passwordPlaceholder": "Enter password",
   "login.submitButton": "Login",
   "register.firstnamePlaceholder": "Enter name",
   "register.lastNamePlaceholder": "Enter last name",
   "register.loginPlaceholder": "Enter login",
   "register.passwordPlaceholder": "Enter password",
-  "register.submitButton": "Register"
+  "register.submitButton": "Register",
+  "home.createTodo": "Create todo"
 }

@@ -1,5 +1,13 @@
+.Wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .Header {
-  position: absolute;
+  position: fixed;
   box-sizing: border-box;
   right: 0;
   left: 0;
@@ -11,4 +19,12 @@
   color: #fff;
   font-size: 22px;
   background-color: #f50057;
+}
+
+.TextField {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 300px;
+  width: 600px;
 }

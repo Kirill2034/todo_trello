@@ -20,10 +20,22 @@ const QUERES = {
         text: 'INSERT INTO users (first_name, last_name, login, password) VALUES($1, $2, $3, $4)',
         values: [firstName, lastName, login, password],
     }),
+    CREATE_TODO: ({name, createdDate, userId}) => ({
+        text: 'INSERT INTO todos (name, created_date, user_id) VALUES ($1, $2, $3)',
+        values: [name, createdDate, userId]
+    }),
+    GET_TODOS_BY_USER_ID: (userId) => ({
+        text: 'SELECT * FROM todos WHERE user_id=$1',
+        values: [userId]
+    }),
     GET_USER_BY_LOGIN_AND_PASSWORD: ({ login, password }) => ({
         text: 'SELECT * FROM users WHERE login=$1 and password=$2',
         values: [login, password],
     }),
+    GET_USER_ID_BY_TOKEN: (token) => ({
+        text: 'SELECT user_id FROM tokens WHERE value=$1',
+        values: [token]
+    })
 }
 
 app.post('/api/register', async (req, res) => {
@@ -53,6 +65,45 @@ app.post('/api/login', async (req, res) => {
     } catch (e) {
         res.status(400).send(e);
     }
+});
+
+app.post('/api/todos', async (req, res) => {
+ try {
+    const token = req.header('Authorization');
+    
+    const result = await client.query(QUERES.GET_USER_ID_BY_TOKEN(token));
+
+    const userId =  result.rows[0].user_id;
+    console.log(userId)
+
+     const todo = {
+         createdDate: new Date().toISOString(),
+         ...req.body,
+         userId
+     }
+    await client.query(QUERES.CREATE_TODO(todo))
+    res.sendStatus(201);
+ } catch (e) {
+     res.status(400).send(e);
+ }
+});
+
+app.get('/api/todos', async (req, res) => {
+    try {
+        const token = req.header('Authorization');
+
+        const result = await client.query(QUERES.GET_USER_ID_BY_TOKEN(token));
+
+        const userId =  result.rows[0].user_id;
+
+        const todos = await client.query(QUERES.GET_TODOS_BY_USER_ID(userId))
+
+        res.send(todos.rows);
+
+    } catch (e) {
+        res.status(400).send(e);
+    }
+
 });
 
 // app.post('/api/create', async (req, res) => {

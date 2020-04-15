@@ -1,29 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form } from 'react-final-form';
 import { Button, Box } from '@material-ui/core';
 import { useHistory } from 'react-router';
+import { API_CLIENT } from '../../api';
 
 const Home = () => {
+  const [todos, setTodos] = useState<any[]>([]);
+
   const history = useHistory();
   const { t } = useTranslation();
 
-  const onSubmit = () => {
-    history.replace('/create');
+  const onClick = () => {
+    history.push('/create');
   };
 
+  useEffect(() => {
+    async function getTodos() {
+      const { data } = await API_CLIENT.get('/todos');
+
+      setTodos(data);
+    }
+    getTodos();
+  }, []);
+
   return (
-    <Box position="absolute" right="20px" top="20px">
-      <Form
-        onSubmit={onSubmit}
-        render={({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <Button type="submit" variant="contained" color="secondary">
-              {t('home.createTodo')}
-            </Button>
-          </form>
-        )}
-      />
+    <Box>
+      <Box position="absolute" right="20px" top="20px">
+        <Button
+          type="button"
+          onClick={onClick}
+          variant="contained"
+          color="secondary"
+        >
+          {t('home.createTodo')}
+        </Button>
+      </Box>
+      {todos.map((todo) => (
+        <div>{todo.name}</div>
+      ))}
     </Box>
   );
 };

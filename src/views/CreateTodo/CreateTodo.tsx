@@ -1,43 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Form, Field } from 'react-final-form';
 import { Box, TextField, Button } from '@material-ui/core';
+import { API_CLIENT } from '../../api';
+import { useHistory } from 'react-router';
 import classes from './CreateTodo.module.css';
 
 const CreateTodo = () => {
-  const [todo, setTodo] = useState('');
+  const history = useHistory();
 
-  const onClick = () => {
-    console.log(todo);
+  const onSubmit = async (values: any) => {
+    await API_CLIENT.post('/todos', values);
+
+    history.replace('/home');
   };
-
-  // const onChange = (event) => {
-  //   {todo} = event.target.value;
-  //   setTodo({todo})
-  // }
 
   return (
     <Box className={classes.Wrapper}>
       <Box className={classes.Header}>Создай новую цель</Box>
-      <Box className={classes.TextField}>
-        <TextField
-          value={todo}
-          label="TODO"
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          style={{ marginRight: 20 }}
-          onChange={(e) => {
-            setTodo(e.target.value);
-          }}
-        />
-        <Button
-          variant="contained"
-          color="secondary"
-          size="large"
-          onClick={onClick}
-        >
-          Создать
-        </Button>
-      </Box>
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Box className={classes.TextField}>
+              <Field
+                name="name"
+                render={({ input }) => (
+                  <TextField
+                    {...input}
+                    label="TODO"
+                    variant="outlined"
+                    color="secondary"
+                    style={{ marginRight: '15px', width: '400px' }}
+                  />
+                )}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                size="large"
+                style={{ fontFamily: 'Montserrat, sans-serif' }}
+              >
+                Создать
+              </Button>
+            </Box>
+          </form>
+        )}
+      />
     </Box>
   );
 };

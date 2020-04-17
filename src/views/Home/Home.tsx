@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import classes from './Home.module.css';
 import { useTranslation } from 'react-i18next';
 import { Button, Box } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import { API_CLIENT } from '../../api';
+import { Todo } from '../../components/Todo';
 
 const Home = () => {
   const [todos, setTodos] = useState<any[]>([]);
+  const [checked, setChecked] = useState(false);
 
   const history = useHistory();
   const { t } = useTranslation();
@@ -24,7 +27,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Box>
+    <Box className={classes.Wrap}>
       <Box position="absolute" right="20px" top="20px">
         <Button
           type="button"
@@ -35,9 +38,11 @@ const Home = () => {
           {t('home.createTodo')}
         </Button>
       </Box>
-      {todos.map((todo) => (
-        <div>{todo.name}</div>
-      ))}
+      <Box className={classes.WrappeTodo}>
+        {todos.map((todo) => (
+          <Todo name={todo.name} checked={checked} />
+        ))}
+      </Box>
     </Box>
   );
 };

@@ -39,8 +39,8 @@ const Home = () => {
         </Button>
       </Box>
       <Box className={classes.WrappeTodo}>
-        {todos.map((todo) => (
-          <Todo name={todo.name} checked={checked} />
+        {todos.map((todo, index) => (
+          <Todo name={todo.name} checked={checked} key={index} />
         ))}
       </Box>
     </Box>

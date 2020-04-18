@@ -11,6 +11,33 @@ const client = new Client(config)
 app.use(cors());
 app.use(express.json());
 
+const publicUrls = ['/api/login', '/api/register'];
+
+const authMiddleware = async (req, res, next) => {
+    if (publicUrls.indexOf(req.originalUrl) !== -1) {
+        next()
+    } else {
+        const token = req.header('Authorization');
+    
+        if (!token) {
+            res.sendStatus(401);
+        } else {
+            try {
+                const result = await client.query(QUERES.GET_USER_ID_BY_TOKEN(token));
+
+                res.locals.userId = result.rows[0].user_id
+
+                next();
+            } catch (e) {
+                res.sendStatus(400);
+            }
+        }
+
+    }
+};
+
+app.use(authMiddleware)
+
 const QUERES = {
     CREATE_TOKEN: ({ userId, value }) => ({
         text: 'INSERT INTO tokens (value, user_id) VALUES($1, $2)',
@@ -35,6 +62,22 @@ const QUERES = {
     GET_USER_ID_BY_TOKEN: (token) => ({
         text: 'SELECT user_id FROM tokens WHERE value=$1',
         values: [token]
+    }),
+    DELETE_TODO_BY_ID: (id) => ({
+        text: 'DELETE FROM todos WHERE id=$1',
+        values: [id]
+    }),
+    GET_TODO_BY_ID: (id) => ({
+        text: 'SELECT * FROM todos WHERE id=$1',
+        values: [id]
+    }),
+    UPDATE_TODO_BY_ID: (id, {done}) => ({
+        text: 'UPDATE todos SET done=$1 WHERE id=$2',
+        values: [done, id]
+    }),
+    DELETE_TOKEN_BY_USER_ID: (userId) => ({
+        text: 'DELETE FROM tokens WHERE user_id=$1',
+        values: [userId]
     })
 }
 
@@ -69,17 +112,11 @@ app.post('/api/login', async (req, res) => {
 
 app.post('/api/todos', async (req, res) => {
  try {
-    const token = req.header('Authorization');
-    
-    const result = await client.query(QUERES.GET_USER_ID_BY_TOKEN(token));
-
-    const userId =  result.rows[0].user_id;
-    console.log(userId)
 
      const todo = {
          createdDate: new Date().toISOString(),
          ...req.body,
-         userId
+         userId: res.locals.userId
      }
     await client.query(QUERES.CREATE_TODO(todo))
     res.sendStatus(201);
@@ -90,13 +127,9 @@ app.post('/api/todos', async (req, res) => {
 
 app.get('/api/todos', async (req, res) => {
     try {
-        const token = req.header('Authorization');
 
-        const result = await client.query(QUERES.GET_USER_ID_BY_TOKEN(token));
-
-        const userId =  result.rows[0].user_id;
-
-        const todos = await client.query(QUERES.GET_TODOS_BY_USER_ID(userId))
+        
+        const todos = await client.query(QUERES.GET_TODOS_BY_USER_ID(res.locals.userId));
 
         res.send(todos.rows);
 
@@ -106,12 +139,59 @@ app.get('/api/todos', async (req, res) => {
 
 });
 
-// app.post('/api/create', async (req, res) => {
+app.delete('/api/todos/:id', async (req, res) => {
+    try {
 
-// })
+        const todoResult = await client.query(QUERES.GET_TODO_BY_ID(req.params.id));
 
-app.get('/', (req, res) => {
-    res.send('Hello world')
+        const todoUserId = todoResult.rows[0].user_id;
+
+        if (res.locals.userId === todoUserId) {
+            await client.query(QUERES.DELETE_TODO_BY_ID(req.params.id));
+
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(403);
+        }
+
+    } catch (e) {
+        res.status(400).send(e)
+    }
+});
+
+app.put('/api/todos/:id', async (req, res) => {
+    try {
+
+        const todoResult = await client.query(QUERES.GET_TODO_BY_ID(req.params.id));
+
+        const todoUserId = todoResult.rows[0].user_id;
+
+        if (res.locals.userId === todoUserId) {
+
+            await client.query(QUERES.UPDATE_TODO_BY_ID(req.params.id, req.body));
+
+            const updatedTodoResult = await client.query(QUERES.GET_TODO_BY_ID(req.params.id));
+
+            res.send(updatedTodoResult.rows[0]);
+
+        } else {
+            res.sendStatus(403);
+        }
+
+        await client.query(QUERES.UPDATE_TODO)
+
+    } catch (e) {
+        res.status(400).send(e)
+    }
+});
+
+app.delete('/api/logout', async (req, res) => {
+    try {
+        await client.query(QUERES.DELETE_TOKEN_BY_USER_ID(res.locals.userId));
+        res.sendStatus(200);
+    } catch (e) {
+        res.sendStatus(400);
+    }
 })
 
 function init() {
@@ -123,9 +203,3 @@ function init() {
 }
 
 init();
-
-// users
-// id, first_name, last_name, login, password
-
-// todo
-// id, title, description, done, user_id

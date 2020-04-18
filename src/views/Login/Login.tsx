@@ -11,6 +11,8 @@ const Login = () => {
   const onSubmit = async (values: any) => {
     const { data } = await API_CLIENT.post('/login', values);
 
+    localStorage.setItem('token', data);
+
     API_CLIENT.defaults.headers['Authorization'] = data;
 
     history.replace('/');

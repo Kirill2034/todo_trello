@@ -4,6 +4,7 @@ import { Login } from '../views/Login';
 import { Register } from '../views/Register';
 import { Home } from '../views/Home';
 import { CreateTodo } from '../views/CreateTodo';
+import { PrivateRoute } from './PrivateRoute';
 
 function App() {
   return (
@@ -15,13 +16,13 @@ function App() {
         <Register />
       </Route>
 
-      <Route path={'/'} exact={true}>
+      <PrivateRoute path={'/'} exact={true}>
         <Home />
-      </Route>
+      </PrivateRoute>
 
-      <Route path={'/create'}>
+      <PrivateRoute path={'/create'}>
         <CreateTodo />
-      </Route>
+      </PrivateRoute>
 
       <Redirect to={'/login'} />
     </Switch>

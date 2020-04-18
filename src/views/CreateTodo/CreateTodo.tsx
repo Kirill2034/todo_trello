@@ -11,7 +11,7 @@ const CreateTodo = () => {
   const onSubmit = async (values: any) => {
     await API_CLIENT.post('/todos', values);
 
-    history.replace('/home');
+    history.goBack();
   };
 
   return (

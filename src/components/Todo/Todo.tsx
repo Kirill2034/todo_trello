@@ -3,20 +3,25 @@ import { Box, Checkbox, Button } from '@material-ui/core';
 import classes from './Todo.module.css';
 
 type Props = {
-  name: string;
-  checked: boolean;
+  todo: any;
+  onDelete: (index: number) => void;
+  index: number;
+  onDone: (index: number) => void;
 };
 
-const Todo: React.FC<Props> = ({ name, checked }) => {
+const Todo: React.FC<Props> = ({ todo, onDelete, index, onDone }) => {
   return (
     <Box className={classes.Todo}>
       <Checkbox
-        checked={checked}
+        onClick={() => onDone(index)}
+        checked={todo.done}
         color="secondary"
         inputProps={{ 'aria-label': 'primary checkbox' }}
       />
-      <p>{name}</p>
-      <Button color="secondary">Удалить</Button>
+      <p>{todo.name}</p>
+      <Button color="secondary" onClick={() => onDelete(index)}>
+        Удалить
+      </Button>
     </Box>
   );
 };

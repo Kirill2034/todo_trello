@@ -8,7 +8,6 @@ import { Todo } from '../../components/Todo';
 
 const Home = () => {
   const [todos, setTodos] = useState<any[]>([]);
-  const [checked, setChecked] = useState(false);
 
   const history = useHistory();
   const { t } = useTranslation();
@@ -26,9 +25,38 @@ const Home = () => {
     getTodos();
   }, []);
 
+  const onDelete = async (index: number) => {
+    const todo = todos[index];
+
+    await API_CLIENT.delete('/todos/' + todo.id);
+
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
+
+  const onDone = async (index: number) => {
+    const todo = todos[index];
+
+    const { data } = await API_CLIENT.put('/todos/' + todo.id, {
+      done: !todo.done,
+    });
+
+    const newTodos = [...todos];
+    newTodos.splice(index, 1, data);
+    setTodos(newTodos);
+  };
+
+  const onLogout = () => {
+    localStorage.removeItem('token');
+    history.replace('/login');
+
+    API_CLIENT.delete('/logout');
+  };
+
   return (
     <Box className={classes.Wrap}>
-      <Box position="absolute" right="20px" top="20px">
+      <Box position="absolute" right="150px" top="20px">
         <Button
           type="button"
           onClick={onClick}
@@ -38,9 +66,25 @@ const Home = () => {
           {t('home.createTodo')}
         </Button>
       </Box>
+      <Box position="absolute" right="20px" top="20px">
+        <Button
+          type="button"
+          onClick={onLogout}
+          variant="contained"
+          color="primary"
+        >
+          Log out
+        </Button>
+      </Box>
       <Box className={classes.WrappeTodo}>
         {todos.map((todo, index) => (
-          <Todo name={todo.name} checked={checked} key={index} />
+          <Todo
+            todo={todo}
+            key={index}
+            onDelete={onDelete}
+            onDone={onDone}
+            index={index}
+          />
         ))}
       </Box>
     </Box>

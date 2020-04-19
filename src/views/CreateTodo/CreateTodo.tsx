@@ -3,20 +3,27 @@ import { Form, Field } from 'react-final-form';
 import { Box, TextField, Button } from '@material-ui/core';
 import { API_CLIENT } from '../../api';
 import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import classes from './CreateTodo.module.css';
 
 const CreateTodo = () => {
   const history = useHistory();
 
   const onSubmit = async (values: any) => {
-    await API_CLIENT.post('/todos', values);
+    if (values !== '') {
+      await API_CLIENT.post('/todos', values);
 
-    history.goBack();
+      history.goBack();
+    } else {
+      return;
+    }
   };
+
+  const { t } = useTranslation();
 
   return (
     <Box className={classes.Wrapper}>
-      <Box className={classes.Header}>Создай новую цель</Box>
+      <Box className={classes.Header}>{t('createTodo.createANewGoal')}</Box>
       <Form
         onSubmit={onSubmit}
         render={({ handleSubmit }) => (
@@ -41,7 +48,7 @@ const CreateTodo = () => {
                 size="large"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               >
-                Создать
+                {t('createTodo.create')}
               </Button>
             </Box>
           </form>

@@ -5,9 +5,14 @@ import { Button, Box } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import { API_CLIENT } from '../../api';
 import { Todo } from '../../components/Todo';
+import { Pagination } from '../../components/Pagination';
+import { ITodo } from '../../types';
 
 const Home = () => {
-  const [todos, setTodos] = useState<any[]>([]);
+  const [todos, setTodos] = useState<ITodo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const todosPerPage = 5;
 
   const history = useHistory();
   const { t } = useTranslation();
@@ -18,12 +23,23 @@ const Home = () => {
 
   useEffect(() => {
     async function getTodos() {
+      setLoading(true);
       const { data } = await API_CLIENT.get('/todos');
-
       setTodos(data);
+      setLoading(false);
     }
+
     getTodos();
   }, []);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const start = currentPage * todosPerPage;
+  const end = start + todosPerPage;
+
+  const pageTodos = todos.slice(start, end);
 
   const onDelete = async (index: number) => {
     const todo = todos[index];
@@ -73,19 +89,27 @@ const Home = () => {
           variant="contained"
           color="primary"
         >
-          Log out
+          {t('home.logout')}
         </Button>
       </Box>
       <Box className={classes.WrappeTodo}>
-        {todos.map((todo, index) => (
+        {pageTodos.map((todo, index) => (
           <Todo
             todo={todo}
             key={index}
             onDelete={onDelete}
             onDone={onDone}
             index={index}
+            loading={loading}
           />
         ))}
+        <Box className={classes.Pagination}>
+          <Pagination
+            todosPerPage={todosPerPage}
+            totalTodos={todos.length}
+            paginate={paginate}
+          />
+        </Box>
       </Box>
     </Box>
   );

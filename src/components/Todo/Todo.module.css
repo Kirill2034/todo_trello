@@ -1,10 +1,17 @@
 .Todo {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border: 1px solid rgb(168, 168, 168);
   border-radius: 4px;
   padding: 5px;
   margin-bottom: 10px;
   margin-top: 10px;
+  width: 100%;
+}
+
+.Wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

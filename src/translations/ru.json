@@ -1,5 +1,6 @@
 {
   "home.createTodo": "Создать todo",
+  "home.logout": "Выйти",
   "login.loginPlaceholder": "Введите логин",
   "login.passwordPlaceholder": "Введите пароль",
   "login.submitButton": "Войти",
@@ -7,5 +8,8 @@
   "register.lastNamePlaceholder": "Введите фамилию",
   "register.loginPlaceholder": "Введите логин",
   "register.passwordPlaceholder": "Введите пароль",
-  "register.submitButton": "Регистрация"
+  "register.submitButton": "Регистрация",
+  "todo.delete": "Удалить",
+  "createTodo.createANewGoal": "Создай новую цель",
+  "createTodo.create": "Создать"
 }

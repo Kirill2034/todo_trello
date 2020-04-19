@@ -7,5 +7,9 @@
   "register.loginPlaceholder": "Enter login",
   "register.passwordPlaceholder": "Enter password",
   "register.submitButton": "Register",
-  "home.createTodo": "Create todo"
+  "home.createTodo": "Create todo",
+  "home.logout": "Log out",
+  "todo.delete": "Delete",
+  "createTodo.createANewGoal": "Create a new goal",
+  "createTodo.create": "Create"
 }

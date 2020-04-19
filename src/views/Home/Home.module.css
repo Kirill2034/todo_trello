@@ -7,8 +7,11 @@
 
 .WrappeTodo {
   border: 2px solid #666;
+  box-sizing: border-box;
+  padding: 20px;
+  position: relative;
   width: 700px;
-  height: 400px;
+  height: 500px;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -17,4 +20,12 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.Pagination {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }

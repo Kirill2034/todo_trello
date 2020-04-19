@@ -18,6 +18,10 @@ const Login = () => {
     history.replace('/');
   };
 
+  const onRegister = () => {
+    history.replace('/register');
+  };
+
   const { t } = useTranslation();
 
   return (
@@ -57,9 +61,16 @@ const Login = () => {
                   )}
                 />
               </Box>
-              <Box display="flex" justifyContent="center">
+              <Box display="flex" justifyContent="space-between">
                 <Button type="submit" variant="contained" color="primary">
                   {t('login.submitButton')}
+                </Button>
+                <Button
+                  onClick={onRegister}
+                  variant="contained"
+                  color="primary"
+                >
+                  {t('register.submitButton')}
                 </Button>
               </Box>
             </Box>
